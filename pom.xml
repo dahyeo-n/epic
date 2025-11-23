@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- Maven 모델 버전, 항상 4.0.0 사용 -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- 그룹 아이디 (프로젝트의 전체 그룹/도메인, 예: me.cbj.Epic) -->
+  <groupId>me.jdh.epic</groupId>
+
+  <!-- 아티팩트 아이디 (프로젝트의 이름) -->
+  <artifactId>epic</artifactId>
+
+  <!-- 패키징 방식: war(웹 애플리케이션 Archive) -->
+  <packaging>war</packaging>
+
+  <!-- 프로젝트 버전 -->
+  <version>1.0-SNAPSHOT</version>
+
+  <!-- 프로젝트 이름 -->
+  <name>epic</name>
+
+  <!-- 빌드 관련 전역 속성 정의 -->
+  <properties>
+    <!-- 자바 소스 컴파일 버전 -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    
+    <!-- 자바 바이트코드 타겟 버전 -->
+    <maven.compiler.target>1.8</maven.compiler.target>
+    
+    <!-- web.xml 파일이 없어도 빌드 실패하지 않도록 -->
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    
+    <!-- 서블릿 스펙 버전 (3.1.0) -->
+    <servlet.version>3.1.0</servlet.version>
+    
+    <!-- JSP 스펙 버전 (2.3.1) -->
+    <jsp.version>2.3.1</jsp.version>
+
+    <!-- 컨텍스트 경로 -->
+    <context.path>/epic</context.path>
+  </properties>
+
+  <!-- 프로젝트에서 사용할 라이브러리 목록 -->
+  <dependencies>
+    <!-- 서블릿 API 의존성 (제공되는 컨테이너에서 처리하도록 scope=provided) -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JSP API 의존성 (scope=provided) -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>${jsp.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JSTL(표준 태그 라이브러리) 의존성 -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+    </dependency>
+
+    <!-- JUnit(단위테스트 라이브러리), scope=test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- 빌드 설정 및 플러그인 관리 -->
+  <build>
+    <plugins>
+      <!-- maven-compiler-plugin: 자바 소스/타겟 버전 지정용 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+
+      <!-- Cargo Maven Plugin: Tomcat 실행용 (tomcat7-maven-plugin 대체, 더 최신이고 안정적) -->
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven3-plugin</artifactId>
+        <version>1.9.0</version>
+        <configuration>
+          <container>
+            <containerId>tomcat9x</containerId>
+            <type>embedded</type>
+          </container>
+          <configuration>
+            <properties>
+              <cargo.servlet.port>8080</cargo.servlet.port>
+              <cargo.protocol>servlet3</cargo.protocol>
+              <!-- 디버그 모드 설정 -->
+              <cargo.jvmargs>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005</cargo.jvmargs>
+            </properties>
+          </configuration>
+          <deployables>
+            <deployable>
+              <type>war</type>
+              <properties>
+                <context>${context.path}</context>
+              </properties>
+            </deployable>
+          </deployables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

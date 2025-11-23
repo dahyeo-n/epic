@@ -1,0 +1,5 @@
+# Enable auto-env through the sdkman_auto_env config
+# Add key=value pairs of SDKs to use below
+java=8.0.452-zulu
+maven=3.9.11
+tomcat=9.0.88
