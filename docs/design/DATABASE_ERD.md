@@ -2,7 +2,7 @@
 
 # Epic 데이터베이스 ERD
 
-[인덱스로 돌아가기](../README.md)
+[인덱스로 돌아가기](../DOCS_INDEX.md)
 
 ## 개요
 

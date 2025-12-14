@@ -2,7 +2,7 @@
 
 # Git Conventions 규칙
 
-[인덱스로 돌아가기](../README.md)
+[인덱스로 돌아가기](../DOCS_INDEX.md)
 
 ## 형식
 ```
