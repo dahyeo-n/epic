@@ -1,0 +1,49 @@
+services:
+  # PostgreSQL 데이터베이스 서비스
+  postgres:
+    # 사용할 Docker 이미지 (PostgreSQL 16 버전의 Alpine Linux 기반 이미지)
+    # Alpine은 경량화된 리눅스 배포판으로 이미지 크기가 작음
+    image: postgres:16-alpine
+    
+    # 컨테이너 이름 (docker ps 시 표시되는 이름)
+    container_name: epic-postgres
+    
+    # 컨테이너 재시작 정책
+    # unless-stopped: 수동으로 중지하지 않는 한 항상 재시작 (Docker 데몬 재시작 시에도 자동 시작)
+    restart: unless-stopped
+    
+    # 환경 변수 설정 (docker/.env 파일에서 값을 가져옴)
+    environment:
+      POSTGRES_DB: ${EPIC_DB}
+      POSTGRES_USER: ${EPIC_USER}
+      POSTGRES_PASSWORD: ${EPIC_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    
+    # 포트 매핑 설정
+    ports:
+      - "5432:5432"
+    
+    # 볼륨 마운트 설정 (데이터 영속성을 위해 사용)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+    # 네트워크 설정 (다른 서비스와 통신하기 위한 네트워크)
+    networks:
+      - epic-network
+    
+    # 헬스 체크 설정 (컨테이너가 정상 작동하는지 주기적으로 확인)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${EPIC_USER} -d ${EPIC_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# 볼륨 정의 섹션 (데이터 영속성을 위한 저장소)
+volumes:
+  postgres_data:
+    driver: local
+
+# 네트워크 정의 섹션 (서비스 간 통신을 위한 네트워크)
+networks:
+  epic-network:
+    driver: bridge
