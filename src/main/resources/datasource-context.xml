@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!-- ==================== 데이터베이스 설정 ==================== -->
+
+  <!-- 
+    PropertySourcesPlaceholderConfigurer 설정
+    - datasource.properties 파일에서 설정값을 읽어옴
+  -->
+  <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+    <property name="location" value="classpath:datasource.properties"/>
+  </bean>
+
+  <!-- 
+    DataSource 설정 (PostgreSQL)
+    - DriverManagerDataSource: Spring에서 제공하는 기본 DataSource 구현체
+    - 운영 환경에서는 HikariCP, DBCP2 등의 커넥션 풀 사용 권장
+  -->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!-- PostgreSQL JDBC 드라이버 클래스 -->
+    <property name="driverClassName" value="org.postgresql.Driver"/>
+
+    <!-- 데이터베이스 연결 URL -->
+    <!-- 형식: jdbc:postgresql://호스트:포트/데이터베이스명 -->
+    <property name="url" value="jdbc:postgresql://localhost:5432/${db.name}"/>
+
+    <!-- 데이터베이스 사용자명 -->
+    <property name="username" value="${db.user}"/>
+
+    <!-- 데이터베이스 비밀번호 -->
+    <property name="password" value="${db.password}"/>
+  </bean>
+
+  <!-- 
+    JdbcTemplate 설정
+    - Spring JDBC의 핵심 클래스
+    - SQL 실행, 결과 처리, 예외 변환 등을 자동으로 처리
+  -->
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+  <!-- 
+    트랜잭션 매니저 설정
+    - DataSource 기반의 트랜잭션 관리
+    - @Transactional 어노테이션 사용을 위해 필요
+  -->
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+</beans>

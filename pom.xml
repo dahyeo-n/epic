@@ -36,6 +36,9 @@
     <!-- JSP 스펙 버전 (2.3.1) -->
     <jsp.version>2.3.1</jsp.version>
 
+    <!-- Spring Framework 버전 -->
+    <spring.version>5.3.30</spring.version>
+
     <!-- 컨텍스트 경로 -->
     <context.path>/epic</context.path>
   </properties>
@@ -71,6 +74,65 @@
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- ==================== Spring Framework ==================== -->
+
+    <!-- Spring Core: IoC/DI 컨테이너 핵심 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring Context: ApplicationContext, Bean 관리 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring Web: 웹 관련 기능 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring WebMVC: MVC 패턴 지원 (DispatcherServlet, Controller 등) -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring JDBC: 데이터베이스 연동 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring TX: 트랜잭션 관리 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- Spring Test: 테스트 지원 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- PostgreSQL JDBC 드라이버 -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.1</version>
     </dependency>
   </dependencies>
 

@@ -76,8 +76,7 @@ spring-boot-devtools.properties
 *~
 
 # Application specific
-*.properties.local
-application-local.properties
+*.properties
 .env
 
 # Cursor
