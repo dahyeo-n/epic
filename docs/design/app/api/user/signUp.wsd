@@ -13,6 +13,8 @@ alt Fail validation
 else Success validation
   UserController->UserService: signUp(dto)
   UserService->UserMapper: existsByEmail(email)
+  UserMapper->DB: SELECT (exist by email)
+  DB->UserMapper: boolean (true or false)
   alt Exist email
     UserMapper->>UserService: Exist email
     UserService->>UserController: DuplicateEmailException
