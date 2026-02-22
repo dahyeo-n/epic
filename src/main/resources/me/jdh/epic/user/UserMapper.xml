@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.jdh.epic.user.mapper.UserMapper">
+
+  <select id="existByEmail" resultType="boolean">
+    SELECT EXISTS (
+      SELECT 1
+      FROM "user"
+      WHERE email = #{email}
+    )
+  </select>
+
+  <insert id="save" parameterType="me.jdh.epic.user.vo.User">
+    INSERT INTO "user" (
+      user_id,
+      role,
+      status,
+      email,
+      password,
+      nickname,
+      description,
+      image_url,
+      created_at,
+      updated_at
+    ) VALUES (
+      #{userId},
+      #{role},
+      #{status},
+      #{email},
+      #{password},
+      #{nickname},
+      #{description},
+      #{imageUrl},
+      CURRENT_TIMESTAMP,
+      CURRENT_TIMESTAMP
+    )
+  </insert>
+
+</mapper>
