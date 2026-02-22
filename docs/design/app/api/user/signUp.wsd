@@ -1,0 +1,31 @@
+@startuml signUp
+title Sign Up
+
+participant Client
+participant UserController
+participant UserService
+participant UserMapper
+participant DB
+
+Client->UserController: POST /api/users/signup (email, password, nickname, description, imageUrl)
+alt Fail validation
+  UserController->>Client: ValidationError: 400 Bad Request
+else Success validation
+  UserController->UserService: signUp(dto)
+  UserService->UserMapper: existsByEmail(email)
+  alt Exist email
+    UserMapper->>UserService: Exist email
+    UserService->>UserController: DuplicateEmailException
+    UserController->>Client: 409 Conflict
+  else Not exist email
+    UserMapper->>UserService: Not exist email
+    UserService->UserService: encryptPassword(password)
+    UserService->UserMapper: save(user)
+    UserMapper->DB: INSERT user
+    DB->>UserMapper: OK
+    UserMapper->>UserService: return 1
+    UserService->>UserController: return 1
+    UserController->>Client: 201 Created + body(result)
+  end
+end
+@enduml
